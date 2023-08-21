@@ -39,8 +39,9 @@ class ConsoleTrader(App):
         chart_text = "test"
         company_overview_text = "test"
         balance_sheet_text = "test"
-        cash_flow_text = "test"
+        cash_flow_variables_text = "test"
         income_statement_text = "test"
+        income_statement_variables_text = "test"
         
         yield Header("ConsoleTrader", classes="Header",)
         yield Footer("Empowering Investments, Simplifying Decisions!")
