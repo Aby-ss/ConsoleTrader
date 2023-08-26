@@ -51,10 +51,6 @@ crypto_data = retrieve_crypto_data(cryptos_list)
 economic_data = retrieve_economic_data(economic_indicators_list)
 commodities_data = retrieve_commodities_data(commodities_list)
 
-# Display or process the retrieved data as needed
-# ...
-
-# Separating JSON variables for clarity
 print("Forex Data:")
 print(forex_data)
 
