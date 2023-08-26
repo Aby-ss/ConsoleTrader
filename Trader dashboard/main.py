@@ -207,7 +207,7 @@ class ConsoleTrader(App):
         cash_flow_text = f"{cash_flow_variables_text}"
         income_statement_text = f"{income_statement_variables_text}"
         
-        financial_statements = f"{balance_sheet}\n {cash_flow_text}\n {income_statement_text}"
+        financial_statements = f"{balance_sheet}\n\n\n{income_statement_text}"
         
                 
         yield Header("ConsoleTrader", classes="Header")
