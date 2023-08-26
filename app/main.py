@@ -36,6 +36,68 @@ class ConsoleTrader(App):
 
     def compose(self) -> ComposeResult:
         
+        # --------------------------------------------- Charts ---------------------------------------------
+        
+        base_url = 'https://www.alphavantage.co/query'
+        function = 'TIME_SERIES_DAILY'
+        output_size = 'compact'
+
+        chart_params = {
+            'function': function,
+            'symbol': "MSFT",
+            'outputsize': output_size,
+            'apikey': "78H5RH2BRNG4G5Z6"
+        }
+
+        
+        response = requests.get(base_url, params=chart_params)
+        data = response.json()
+
+        if 'Error Message' in data:
+            print(f"Error: {data['Error Message']}")
+        else:
+            time_series = data['Time Series (Daily)']
+            dates = []
+            close_prices = []
+
+            for date, values in time_series.items():
+                dates.append(date)
+                close_prices.append(float(values['4. close']))
+
+            # Create and display ASCII chart
+            chart = asciichartpy.plot(close_prices, {"width": 5, "height": 10, "format": "{:8.2f}"})
+            # print(Panel(chart, title=f"Monthly Close Prices for {symbol}", border_style="bold white", box=box.SQUARE))
+            
+        # --------------------------------------------- Company Overview ---------------------------------------------
+        
+        company_overview_params = {
+        'function': "OVERVIEW",
+        'symbol': "MSFT",
+        'apikey': "78H5RH2BRNG4G5Z6"
+        }
+            
+        response = requests.get(base_url, params=company_overview_params)
+        data = response.json()
+
+        if 'Error Message' in data:
+            print(f"Error: {data['Error Message']}")
+        else:
+            overview_text = ""
+            for key, value in data.items():
+                overview_text += f"{key}: {value}\n"
+
+            # Extract important variables
+            description = re.search(r"Description: (.+)", overview_text).group(1)
+            sector = re.search(r"Sector: (.+)", overview_text).group(1)
+            industry = re.search(r"Industry: (.+)", overview_text).group(1)
+            name = re.search(r"Name: (.+)", overview_text).group(1)
+            exchange = re.search(r"Exchange: (.+)", overview_text).group(1)
+            currency = re.search(r"Currency: (.+)", overview_text).group(1)
+            address = re.search(r"Address: (.+)", overview_text).group(1)
+            asset_type = re.search(r"AssetType: (.+)", overview_text).group(1)
+            
+            company_overview = f"{name}\n\n{description}\n\n\nIndustry: {industry}\nSection: {sector}\nAddress: {address}\ncurrency: {currency}"
+        
         yield Header("ConsoleTrader", classes="Header")
         yield Footer("Empowering Investments, Simplifying Decisions!")
         yield Horizontal(
