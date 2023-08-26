@@ -1,5 +1,8 @@
 import requests
 
+from rich.traceback import install
+install(show_locals=True)
+
 # Your Alpha Vantage API key
 api_key = "78H5RH2BRNG4G5Z6"
 
