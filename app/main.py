@@ -74,7 +74,7 @@ class ConsoleTrader(App):
         'function': "OVERVIEW",
         'symbol': "MSFT",
         'apikey': "78H5RH2BRNG4G5Z6"
-        }
+    }
             
         response = requests.get(base_url, params=company_overview_params)
         data = response.json()
@@ -97,12 +97,122 @@ class ConsoleTrader(App):
             asset_type = re.search(r"AssetType: (.+)", overview_text).group(1)
             
             company_overview = f"{name}\n\n{description}\n\n\nIndustry: {industry}\nSection: {sector}\nAddress: {address}\ncurrency: {currency}"
+            
+            
+            def get_financial_data(function):
+                base_url = 'https://www.alphavantage.co/query'
+
+                params = {
+                    'function': function,
+                    'symbol': "MSFT",
+                    'apikey': "78H5RH2BRNG4G5Z6"
+                }
+
+                try:
+                    response = requests.get(base_url, params=params)
+                    data = response.json()
+
+                    if 'Error Message' in data:
+                        print(f"Error: {data['Error Message']}")
+                        return None
+                    else:
+                        return data
+
+                except requests.exceptions.RequestException as e:
+                    print(f"Error: {e}")
+                    return None
+            
+            # --------------------------------------------- Balance Sheet ---------------------------------------------
+            
+            def balance_sheet(api_key, symbol):
+                data = get_financial_data('BALANCE_SHEET')
+                if data:
+                    balance_sheet_data = data.get('annualReports', [])
+                    if balance_sheet_data:
+                        important_variables = (
+                            balance_sheet_data[0].get('fiscalDateEnding', ''),
+                            balance_sheet_data[0].get('totalAssets', ''),
+                            balance_sheet_data[0].get('totalLiabilities', ''),
+                            balance_sheet_data[0].get('totalEquity', ''),
+                            balance_sheet_data[0].get('cashAndCashEquivalents', ''),
+                            balance_sheet_data[0].get('grossProfit', '')
+                        )
+                        return important_variables
+                    else:
+                        print("Balance sheet data not available for this symbol.")
+                        return None     
+                           
+            balance_sheet_data = balance_sheet("78H5RH2BRNG4G5Z6", "MSFT")
+            if balance_sheet_data:
+
+                fiscal_date_ending, total_assets, total_liabilities, total_equity, cash_and_equivalents, gross_profit = balance_sheet_data
+            
+                balance_sheet_variables_text = f"Fiscal Date Ending: {fiscal_date_ending}\nTotal Assets: {total_assets}\nTotal Liabilities: {total_liabilities}\nTotal Equity: {total_equity}\nCash and Cash Equivalents: {cash_and_equivalents}\nGross Profit: {gross_profit}"
+
+            # --------------------------------------------- Cash Flow ---------------------------------------------
+            
+            def cash_flow(api_key, symbol):
+                data = get_financial_data('CASH_FLOW')
+                if data:
+                    cash_flow_data = data.get('annualReports', [])
+                    if cash_flow_data:
+                        important_variables = (
+                            cash_flow_data[0].get('fiscalDateEnding', ''),
+                            cash_flow_data[0].get('operatingCashflow', ''),
+                            cash_flow_data[0].get('investingCashflow', ''),
+                            cash_flow_data[0].get('financingCashflow', ''),
+                            cash_flow_data[0].get('freeCashflow', ''),
+                            cash_flow_data[0].get('grossProfit', '')
+                        )
+                        return important_variables
+                    else:
+                        print("Cash flow data not available for this symbol.")
+                        return None
+
+            cash_flow_data = cash_flow("78H5RH2BRNG4G5Z6", "MSFT")
+            if cash_flow_data:
+                fiscal_date_ending, operating_cashflow, investing_cashflow, financing_cashflow, free_cashflow, gross_profit = cash_flow_data
+                
+                cash_flow_variables_text = f"Fiscal Date Ending: {fiscal_date_ending}\nOperating Cash Flow: {operating_cashflow}\nInvesting Cash Flow: {investing_cashflow}\nFinancing Cash Flow: {financing_cashflow}\nFree Cash Flow: {free_cashflow}\nGross Profit: {gross_profit}"
+
+            # --------------------------------------------- Income Statement ---------------------------------------------
+            
+            def income_statement(api_key, symbol):
+                data = get_financial_data('INCOME_STATEMENT')
+                if data:
+                    income_statement_data = data.get('annualReports', [])
+                    if income_statement_data:
+                        important_variables = (
+                            income_statement_data[0].get('fiscalDateEnding', ''),
+                            income_statement_data[0].get('totalRevenue', ''),
+                            income_statement_data[0].get('netIncome', ''),
+                            income_statement_data[0].get('operatingIncome', ''),
+                            income_statement_data[0].get('grossProfit', '')
+                        )
+                        return important_variables
+                    else:
+                        print("Income statement data not available for this symbol.")
+                        return None
+
+            income_statement_data = income_statement("78H5RH2BRNG4G5Z6", "MSFT")
+            if income_statement_data:
+                fiscal_date_ending, total_revenue, net_income, operating_income, gross_profit = income_statement_data
+                
+                income_statement_variables_text = f"Fiscal Date Ending: {fiscal_date_ending}\nTotal Revenue: {total_revenue}\nNet Income: {net_income}\nOperating Income: {operating_income}\nGross Profit: {gross_profit}"
+
+
+        chart_text = f"{chart}"
+        company_overview_text = f"{company_overview}"
+        balance_sheet_text = f"{balance_sheet_variables_text}"
+        cash_flow_text = f"{cash_flow_variables_text}"
+        income_statement_text = f"{income_statement_variables_text}"
         
+                
         yield Header("ConsoleTrader", classes="Header")
         yield Footer("Empowering Investments, Simplifying Decisions!")
         yield Horizontal(
             Vertical(
-                Static("Chart"),
+                Static(f"{chart_text}"),
                 classes="column",
             ),
             Vertical(
@@ -112,7 +222,7 @@ class ConsoleTrader(App):
         )
         yield Horizontal(
             Vertical(
-                Static("Enterprise Information"),
+                Static(f"{company_overview_text}"),
                 classes="column",
             ),
             Vertical(
