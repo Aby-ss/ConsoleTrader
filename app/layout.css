@@ -1,0 +1,18 @@
+Static {
+    content-align: center middle;
+    background: #252c36;
+    border: solid rgb(119, 217, 7);
+    height: 1fr;
+}
+
+.column {
+    width: 2fr;
+}
+
+.Header {
+    dock: top;
+    height: 3;
+    content-align: center middle;
+    background: rgb(152, 152, 152);
+    color: white;
+  }
