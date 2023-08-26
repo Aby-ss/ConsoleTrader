@@ -35,29 +35,30 @@ class ConsoleTrader(App):
     CSS_PATH = "layout.css"
 
     def compose(self) -> ComposeResult:
-    
-        chart_text = "test"
-        company_overview_text = "test"
-        balance_sheet_text = "test"
-        cash_flow_variables_text = "test"
-        income_statement_text = "test"
-        income_statement_variables_text = "test"
         
-        yield Header("ConsoleTrader", classes="Header",)
+        yield Header("ConsoleTrader", classes="Header")
         yield Footer("Empowering Investments, Simplifying Decisions!")
         yield Horizontal(
             Vertical(
-                Static(f"{chart_text}"),
-                Static(f"{company_overview_text}"),
+                Static("Chart"),
                 classes="column",
             ),
             Vertical(
-                Static(f"{balance_sheet_text}"),
-                Static(f"{cash_flow_variables_text}"),
-                Static(f"{income_statement_variables_text}"),
+                Static("Income Statement"),
+                classes="column"
+            )
+        )
+        yield Horizontal(
+            Vertical(
+                Static("Enterprise Information"),
                 classes="column",
             ),
+            Vertical(
+                Static("News/Events"),
+                classes="column"
+            )
         )
+        
     
         def on_mount(self) -> None:
             self.Header.styles.background = "#9932CC"
