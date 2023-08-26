@@ -74,7 +74,7 @@ class ConsoleTrader(App):
         'function': "OVERVIEW",
         'symbol': "AAPL",
         'apikey': "78H5RH2BRNG4G5Z6"
-    }
+        }
             
         response = requests.get(base_url, params=company_overview_params)
         data = response.json()
