@@ -6,7 +6,7 @@ api_key = "78H5RH2BRNG4G5Z6"
 def get_data(function, symbol):
     base_url = "https://www.alphavantage.co/query"
     params = {
-        "function": "TIME_SERIES_DAILY",
+        "function": "TIME_SERIES_MONTHLY",
         "symbol": "AAPL",
         "apikey": api_key
     }
@@ -18,13 +18,21 @@ def retrieve_forex_rates(currencies):
     forex_rates = {}
     for currency in currencies:
         forex_data = get_data("CURRENCY_EXCHANGE_RATE", f"USD/{currency}")
-        forex_rates[currency] = forex_data
+        forex_rates[currency] = {
+            "Exchange Rate": forex_data.get("Realtime Currency Exchange Rate", {}).get("5. Exchange Rate", None),
+            "Last Refreshed": forex_data.get("Realtime Currency Exchange Rate", {}).get("6. Last Refreshed", None)
+        }
     return forex_rates
 
 def retrieve_crypto_data(cryptos):
     crypto_data = {}
     for crypto in cryptos:
-        crypto_data[crypto] = get_data("DIGITAL_CURRENCY_INTRADAY", f"{crypto}/USD")
+        crypto_intraday_data = get_data("DIGITAL_CURRENCY_INTRADAY", f"{crypto}/USD")
+        last_refreshed = list(crypto_intraday_data.get("Time Series Crypto (5min)", {}).keys())[-1]
+        crypto_data[crypto] = {
+            "Last Refreshed": last_refreshed,
+            "Price": crypto_intraday_data.get("Time Series Crypto (5min)", {}).get(last_refreshed, {}).get("1a. price (USD)", None)
+        }
     return crypto_data
 
 def retrieve_economic_data(indicators):
@@ -51,6 +59,7 @@ crypto_data = retrieve_crypto_data(cryptos_list)
 economic_data = retrieve_economic_data(economic_indicators_list)
 commodities_data = retrieve_commodities_data(commodities_list)
 
+# Display retrieved data
 print("Forex Data:")
 print(forex_data)
 
