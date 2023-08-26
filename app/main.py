@@ -44,7 +44,7 @@ class ConsoleTrader(App):
 
         chart_params = {
             'function': function,
-            'symbol': "MSFT",
+            'symbol': "AAPL",
             'outputsize': output_size,
             'apikey': "78H5RH2BRNG4G5Z6"
         }
@@ -72,7 +72,7 @@ class ConsoleTrader(App):
         
         company_overview_params = {
         'function': "OVERVIEW",
-        'symbol': "MSFT",
+        'symbol': "AAPL",
         'apikey': "78H5RH2BRNG4G5Z6"
     }
             
@@ -104,7 +104,7 @@ class ConsoleTrader(App):
 
                 params = {
                     'function': function,
-                    'symbol': "MSFT",
+                    'symbol': "AAPL",
                     'apikey': "78H5RH2BRNG4G5Z6"
                 }
 
@@ -142,7 +142,7 @@ class ConsoleTrader(App):
                         print("Balance sheet data not available for this symbol.")
                         return None     
                            
-            balance_sheet_data = balance_sheet("78H5RH2BRNG4G5Z6", "MSFT")
+            balance_sheet_data = balance_sheet("78H5RH2BRNG4G5Z6", "AAPL")
             if balance_sheet_data:
 
                 fiscal_date_ending, total_assets, total_liabilities, total_equity, cash_and_equivalents, gross_profit = balance_sheet_data
@@ -169,7 +169,7 @@ class ConsoleTrader(App):
                         print("Cash flow data not available for this symbol.")
                         return None
 
-            cash_flow_data = cash_flow("78H5RH2BRNG4G5Z6", "MSFT")
+            cash_flow_data = cash_flow("78H5RH2BRNG4G5Z6", "AAPL")
             if cash_flow_data:
                 fiscal_date_ending, operating_cashflow, investing_cashflow, financing_cashflow, free_cashflow, gross_profit = cash_flow_data
                 
@@ -194,7 +194,7 @@ class ConsoleTrader(App):
                         print("Income statement data not available for this symbol.")
                         return None
 
-            income_statement_data = income_statement("78H5RH2BRNG4G5Z6", "MSFT")
+            income_statement_data = income_statement("78H5RH2BRNG4G5Z6", "AAPL")
             if income_statement_data:
                 fiscal_date_ending, total_revenue, net_income, operating_income, gross_profit = income_statement_data
                 
@@ -207,6 +207,8 @@ class ConsoleTrader(App):
         cash_flow_text = f"{cash_flow_variables_text}"
         income_statement_text = f"{income_statement_variables_text}"
         
+        financial_statements = f"{balance_sheet}\n {cash_flow_text}\n {income_statement_text}"
+        
                 
         yield Header("ConsoleTrader", classes="Header")
         yield Footer("Empowering Investments, Simplifying Decisions!")
@@ -216,7 +218,7 @@ class ConsoleTrader(App):
                 classes="column",
             ),
             Vertical(
-                Static("Income Statement"),
+                Static(f"{financial_statements}"),
                 classes="column"
             )
         )
