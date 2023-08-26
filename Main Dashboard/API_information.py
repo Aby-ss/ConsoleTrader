@@ -6,8 +6,8 @@ api_key = "78H5RH2BRNG4G5Z6"
 def get_data(function, symbol):
     base_url = "https://www.alphavantage.co/query"
     params = {
-        "function": TIME_SERIES_DAILY,
-        "symbol": AAPL,
+        "function": "TIME_SERIES_DAILY",
+        "symbol": "AAPL",
         "apikey": api_key
     }
     response = requests.get(base_url, params=params)
@@ -50,3 +50,19 @@ forex_data = retrieve_forex_rates(currencies_list)
 crypto_data = retrieve_crypto_data(cryptos_list)
 economic_data = retrieve_economic_data(economic_indicators_list)
 commodities_data = retrieve_commodities_data(commodities_list)
+
+# Display or process the retrieved data as needed
+# ...
+
+# Separating JSON variables for clarity
+print("Forex Data:")
+print(forex_data)
+
+print("Crypto Data:")
+print(crypto_data)
+
+print("Economic Data:")
+print(economic_data)
+
+print("Commodities Data:")
+print(commodities_data)
