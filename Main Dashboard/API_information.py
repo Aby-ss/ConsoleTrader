@@ -6,7 +6,7 @@ api_key = "78H5RH2BRNG4G5Z6"
 def get_data(function, symbol):
     base_url = "https://www.alphavantage.co/query"
     params = {
-        "function": "TIME_SERIES_MONTHLY",
+        "function": "TIME_SERIES_DAILY",
         "symbol": "AAPL",
         "apikey": api_key
     }
@@ -28,11 +28,18 @@ def retrieve_crypto_data(cryptos):
     crypto_data = {}
     for crypto in cryptos:
         crypto_intraday_data = get_data("DIGITAL_CURRENCY_INTRADAY", f"{crypto}/USD")
-        last_refreshed = list(crypto_intraday_data.get("Time Series Crypto (5min)", {}).keys())[-1]
-        crypto_data[crypto] = {
-            "Last Refreshed": last_refreshed,
-            "Price": crypto_intraday_data.get("Time Series Crypto (5min)", {}).get(last_refreshed, {}).get("1a. price (USD)", None)
-        }
+        time_series = crypto_intraday_data.get("Time Series Crypto (5min)", {})
+        if time_series:
+            last_refreshed = list(time_series.keys())[-1]
+            crypto_data[crypto] = {
+                "Last Refreshed": last_refreshed,
+                "Price": time_series[last_refreshed].get("1a. price (USD)", None)
+            }
+        else:
+            crypto_data[crypto] = {
+                "Last Refreshed": None,
+                "Price": None
+            }
     return crypto_data
 
 def retrieve_economic_data(indicators):
