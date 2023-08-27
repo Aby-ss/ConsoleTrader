@@ -8,3 +8,7 @@ response = requests.request("GET", url, data=payload)
 
 status_code = response.status_code
 result = response.text
+
+print("Response Status Code:", status_code)
+print("Response Content:")
+print(result)
