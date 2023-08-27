@@ -36,6 +36,29 @@ class Dashboard(App):
 
     def compose(self) -> ComposeResult:
 
+        yield Header("Ultimate Financial Informative System", classes="Header")
+        yield Footer("Empowering Investments, Simplifying Decisions!")
+        yield Horizontal(
+            Vertical(
+                Static("box1"),
+                classes="column",
+            ),
+            Vertical(
+                Static("box2"),
+                classes="column"
+            )
+        )
+        yield Horizontal(
+            Vertical(
+                Static("box3"),
+                classes="column",
+            ),
+            Vertical(
+                Static("box4"),
+                classes="column"
+            )
+        )
+        
         def on_mount(self) -> None:
             self.Header.styles.background = "#9932CC"
             
