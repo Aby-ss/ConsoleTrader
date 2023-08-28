@@ -5,7 +5,7 @@ from rich.layout import Layout
 from rich.traceback import install
 install(show_locals=True)
 
-url = "https://api.apilayer.com/financelayer/news?apikey=EHw0Ndjb26EG0xvAK5uNSO5oNkgp5w73&tickers=appl&tickers=btc&tags=Oil&sources=forbes.com&sort=desc&offset=5&limit=5&keywords=oil%20prices&fallback=on&date=thismonth"
+url = "https://api.apilayer.com/financelayer/news?apikey=EHw0Ndjb26EG0xvAK5uNSO5oNkgp5w73&tickers=appl&tickers=btc&tags=Oil&sources=forbes.com&sort=desc&offset=5&limit=7&keywords=oil%20prices&fallback=on&date=thismonth"
 
 response = requests.get(url)
 data = response.json()
