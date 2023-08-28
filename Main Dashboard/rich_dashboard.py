@@ -33,10 +33,16 @@ layout.split_column(
 )
 
 layout["Body"].split_row(
-    Layout(name="Right"), # Use Right side for Weather Analytics and News
-    Layout(name="Left")
+    Layout(name="Left"),
+    Layout(name="News")
 )
 
+
+layout["Left"].split_column(
+    Layout(name="Forex Exchange Trade Data"),
+    Layout(name="Commodities / Market Data"),
+    Layout(name="Major Sector News Scroll")
+)
 
 
 class Header:
@@ -49,7 +55,7 @@ class Header:
         grid.add_row(
             "🗃", "[b]Ultimate Financial Informative System[/]", datetime.now().ctime().replace(":", "[blink]:[/]"),
         )
-        return Panel(grid, style="bold white")
+        return Panel(grid, style="bold white", box=box.SQUARE)
     
 class Footer:
 
@@ -57,7 +63,7 @@ class Footer:
         grid = Table.grid(expand=True)
         grid.add_column(justify="center", ratio=1)
         grid.add_row("[i]Empowering Investments, Simplifying Decisions[/]")
-        return Panel(grid, style="white on black")
+        return Panel(grid, style="white on black", box=box.SQUARE)
 
     
     
