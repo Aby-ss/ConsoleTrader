@@ -42,7 +42,7 @@ layout["Body"].split_row(
 layout["Left"].split_column(
     Layout(name="Forex Exchange Trade Data"),
     Layout(name="Commodities / Market Data"),
-    Layout(name="Major Sector News Scroll")
+    Layout(name="Major Sector Stock Options Scroll")
 )
 
 
