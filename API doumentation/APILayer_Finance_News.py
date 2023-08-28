@@ -12,6 +12,12 @@ data = response.json()
 
 news_objects = data["data"]
 
+# Create a layout to organize panels
+layout = Layout(name="root")
+
+# Create a single panel to hold all news articles
+news_panel_content = ""
+
 for news in news_objects:
     title = news["title"]
     description = news["description"]
@@ -19,16 +25,19 @@ for news in news_objects:
     source = news["source"]
     published_at = news["published_at"]
     
-    panel = Panel(
-        
+    # Add each news article's information to the aggregated content
+    news_panel_content += (
+        f"Title: [link={url}]{title}[/link]\n"
         f"Description: {description}\n"
         f"Source: {source}\n"
-        f"Published At: {published_at}",
-        title=f"[link={url}]Title:[/link] {title}\n",
-        title_align="left",
-        border_style="bold white",
-        box=box.SQUARE
+        f"Published At: {published_at}\n\n"
     )
-    
-    print(panel)
-    print()  # Add an empty line between panels
+
+# Create the panel with aggregated content
+news_panel = Panel(news_panel_content, title="Aggregated News", border_style="bold white", box=box.SQUARE)
+
+# Add the news panel to the layout
+layout.split_column(news_panel)
+
+# Print the layout to display the news panel
+print(layout)
